@@ -18,15 +18,28 @@ function Users() {
 
 const User = ({ user }: { user: RemoteUser }) => {
     const { username, status } = user
-    const title = `${username} - ${status === USER_CONNECTION_STATUS.ONLINE ? "online" : "offline"}`
+    const isProfessor = username.toLowerCase().includes("ta") // Check if username contains "TA"
+    const title = `${username} - ${status === USER_CONNECTION_STATUS.ONLINE ? "online" : "offline"}${
+        isProfessor ? " (Professor)" : ""
+    }`
 
     return (
         <div
             className="relative flex w-[100px] flex-col items-center gap-2"
             title={title}
         >
-            <Avatar name={username} size="50" round={"12px"} title={title} />
-            <p className="line-clamp-2 max-w-full text-ellipsis break-words">
+            <div className="relative">
+                <Avatar name={username} size="50" round={"12px"} title={title} />
+                {isProfessor && (
+                    <span
+                        className="absolute top-0 left-0 text-xs bg-blue-600 text-white px-1 py-0.5 rounded"
+                        style={{ transform: "translate(-50%, -50%)" }}
+                    >
+                        TA
+                    </span>
+                )}
+            </div>
+            <p className="line-clamp-2 max-w-full text-ellipsis break-words text-center">
                 {username}
             </p>
             <div
